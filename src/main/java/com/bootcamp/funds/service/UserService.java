@@ -2,14 +2,13 @@ package com.bootcamp.funds.service;
 
 import java.util.List;
 
-import com.bootcamp.funds.model.User;
+import com.bootcamp.funds.dto.UserDto;
 
 public interface UserService {
-	User addUser(User user);
-	User updateUser(User user);
-	String deleteUserById(Long user_id);
-	List<User> showAllUsers();
-	User getUserById(Long user_id);
-	boolean validateUser(String user_name, String password);
+	public UserDto addUser(UserDto dto);
+	public UserDto updateUser(Long user_id, UserDto dto);
+	public String deleteUserById(Long user_id);
+	List<UserDto> showAllUsers();
+	UserDto getUserById(Long user_id);
 
 }

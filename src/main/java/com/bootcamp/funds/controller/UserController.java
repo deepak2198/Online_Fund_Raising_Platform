@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bootcamp.funds.dto.UserDto;
 import com.bootcamp.funds.exceptions.UserNotFoundException;
-import com.bootcamp.funds.model.User;
 import com.bootcamp.funds.service.UserServiceImpl;
 
 @RestController
@@ -26,34 +25,35 @@ public class UserController {
 	@Autowired
 	private UserServiceImpl userService;
 	
-	@GetMapping("/")
-	public ResponseEntity<List<User>> getAllUsers(){
-		return new ResponseEntity<List<User>>(userService.showAllUsers(), HttpStatus.OK);
+	@GetMapping("/getAllUsers")
+	public ResponseEntity<List<UserDto>> getAllUsers(){
+		return new ResponseEntity<List<UserDto>>(userService.showAllUsers(), HttpStatus.OK);
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<User> createUser(@RequestBody User user){
-		return new ResponseEntity<User>(userService.addUser(user), HttpStatus.CREATED);
+	public ResponseEntity<UserDto> createUser(@RequestBody UserDto user){
+		return new ResponseEntity<UserDto>(userService.addUser(user), HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/update")
-	public ResponseEntity<User> updateUser(@RequestParam(name = "id") Long user_id, @RequestBody User user){
-		if(userService.getUserById(user_id) == null) {
+	@PutMapping("/update/{user_id}")
+	public ResponseEntity<UserDto> updateUser(@PathVariable Long user_id, @RequestBody UserDto user){
+		UserDto opt = userService.getUserById(user_id);
+		if(opt == null) {
 			throw new UserNotFoundException();
 		}
-		User u = userService.updateUser(user);
-		return new ResponseEntity<User>(u, HttpStatus.CREATED);
+		UserDto u = userService.updateUser(user_id, user);
+		return new ResponseEntity<UserDto>(u, HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/getUserById/{user_id}")
-	public ResponseEntity<User> getUser(@PathVariable Long user_id){
-		return new ResponseEntity<User>(userService.getUserById(user_id), HttpStatus.OK);
+	public ResponseEntity<UserDto> getUser(@PathVariable Long user_id){
+		return new ResponseEntity<UserDto>(userService.getUserById(user_id), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete/{user_id}")
-	public ResponseEntity<User> removeUser(@PathVariable Long user_id){
+	public ResponseEntity<UserDto> removeUser(@PathVariable Long user_id){
 		userService.deleteUserById(user_id);
-		return new ResponseEntity<User>(HttpStatus.OK);
+		return new ResponseEntity<UserDto>(HttpStatus.OK);
 	}
 	
 
