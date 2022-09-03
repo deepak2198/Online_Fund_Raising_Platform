@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bootcamp.funds.converter.UserConverter;
 import com.bootcamp.funds.dto.UserDto;
 import com.bootcamp.funds.exceptions.UserNotFoundException;
 import com.bootcamp.funds.model.User;
-import com.bootcamp.funds.repository.CommentRepository;
 import com.bootcamp.funds.repository.UserRepository;
 
 @Service
@@ -21,13 +20,13 @@ public class UserServiceImpl implements UserService{
 	UserRepository repo;
 	
 	@Autowired
-	UserConverter converter;
+	ModelMapper modelMapper;
 
 	@Override
 	public UserDto addUser(UserDto dto) {
-		User user = converter.convertDtoToEntity(dto);
+		User user = modelMapper.map(dto, User.class);
 		user = repo.save(user);
-		return converter.convertEntityToDto(user);
+		return modelMapper.map(user, UserDto.class);
 	}
 
 	@Override
@@ -39,7 +38,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<UserDto> showAllUsers() {
 		List<User> users = repo.findAll();
-		List<UserDto> userDto = users.stream().map(user -> converter.convertEntityToDto(user)).collect(Collectors.toList());
+		List<UserDto> userDto = users.stream().map(user -> modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
 		return userDto;
 	}
 
@@ -59,7 +58,7 @@ public class UserServiceImpl implements UserService{
 		if(opt == false) {
 			throw new UserNotFoundException();
 		}
-		return converter.convertEntityToDto(repo.findById(user_id).get());
+		return modelMapper.map(repo.findById(user_id).get(), UserDto.class);
 	}
 
 }
