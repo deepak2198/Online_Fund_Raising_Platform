@@ -1,7 +1,9 @@
 package com.bootcamp.funds.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -52,5 +54,9 @@ public class Post {
 	@JsonIgnore
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Comment> commentList = new HashSet<Comment>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Donation> donationsList = new ArrayList<Donation>();
 
 }

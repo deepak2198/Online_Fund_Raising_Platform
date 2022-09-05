@@ -1,8 +1,5 @@
 package com.bootcamp.funds.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,31 +74,6 @@ public class CommentServiceImpl implements CommentService {
 		
 		commentRepo.deleteById(commentId);
 		return "Comment with ID:: "+commentId+" is deleted successfully";
-	}
-
-	@Override
-	public CommentDto getCommentById(Long postId, Long commentId) {
-		// retrieve comments by commentId
-		Comment comment = commentRepo.findById(commentId).orElseThrow(() -> new CommentNotFoundException());
-								
-		// retrieve post entity by id
-		Post post = postRepo.findById(postId).orElseThrow(() -> new PostNotFoundException());
-								
-		if(!(comment.getPost().getId() == post.getId())) {
-			throw new APIException(HttpStatus.BAD_REQUEST, "comments doesnot belongs to the post");
-		}
-		
-		return mapper.map(comment, CommentDto.class);
-	}
-
-	@Override
-	public List<CommentDto> getAllComments(Long postId) {
-		
-		List<Comment> commentData = commentRepo.findByPostId(postId);
-		
-		return commentData.stream().map(comment -> mapper.map(comment, CommentDto.class)).collect(Collectors.toList());
-		
-		
 	}
 
 }

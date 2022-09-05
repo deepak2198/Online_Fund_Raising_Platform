@@ -23,5 +23,10 @@ public class UserExceptionHandler {
 	public ResponseEntity<Object> commentNotFoundExceptionHandler(CommentNotFoundException ex){
 		return new ResponseEntity<Object>("comments not found...", HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(value=DonationNotFoundException.class)
+	public ResponseEntity<Object> donationNotFoundExceptionHandler(DonationNotFoundException ex){
+		return new ResponseEntity<Object>("donation not found...", HttpStatus.NOT_FOUND);
+	}
 
 }

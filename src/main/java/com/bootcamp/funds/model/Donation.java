@@ -20,31 +20,32 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "comments_table")
-@Getter  @Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+@Entity
+@Getter   @Setter
+@Table(name="donation_table")
+public class Donation {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "comment_id")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="donation_id")
 	private long id;
 	
-	@Column(name = "Comment")
-	private String text;
+	@Column(name="amount_donated")
+	private double amount;
 	
-	@Column(name = "Created_On")
-	private LocalDate createdOn;
+	@Column(name="donation_date")
+	private LocalDate dateOfDonation;
 	
-	@Column(name = "Created_By")
-	private String createdby;
-
+	@Column(name="comments")
+	private String comments;
+	
 	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "comment_post_id")
+	@JoinColumn(name = "donation_post_id")
 	private Post post;
 
-}
 
+}
