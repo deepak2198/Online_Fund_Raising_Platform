@@ -1,6 +1,8 @@
 package com.bootcamp.funds.model;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,30 +24,33 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "comments_table")
-@Getter  @Setter
+@Getter   @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+@Table(name = "post_table")
+public class Post {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "comment_id")
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "post_id")
 	private long id;
 	
-	@Column(name = "Comment")
-	private String text;
-	
-	@Column(name = "Created_On")
-	private LocalDate createdOn;
-	
-	@Column(name = "Created_By")
-	private String createdby;
+	@Column(name = "description")
+	private String description;
+
+	@Column(name = "createdOn")
+	private LocalDate createdOn = LocalDate.now();
+
+	@Column(name = "createdBy")
+	private String createdBy;
 	
 	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "comment_post_id")
-	private Post post;
+	@JoinColumn(name = "post_user_id")
+	private User user;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Comment> commentList = new HashSet<Comment>();
 
 }
-

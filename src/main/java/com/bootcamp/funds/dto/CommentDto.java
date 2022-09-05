@@ -18,5 +18,7 @@ public class CommentDto implements Serializable{
 	private String text;
 	private LocalDate createdOn;
 	private String createdby;
+	
+	//private Post post;
 
 }

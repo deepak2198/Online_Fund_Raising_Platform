@@ -1,8 +1,8 @@
 package com.bootcamp.funds.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +37,15 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<UserDto> showAllUsers() {
-		List<User> users = repo.findAll();
-		List<UserDto> userDto = users.stream().map(user -> modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
+		List<User> user = repo.findAll();
+		
+		List<UserDto> userDto = new ArrayList<>();
+		for(User u: user) {
+			userDto.add(modelMapper.map(u, UserDto.class));
+		}
+		
 		return userDto;
+		
 	}
 
 	@Override
@@ -54,11 +60,10 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public UserDto getUserById(Long user_id) {
-		boolean opt = repo.existsById(user_id);
-		if(opt == false) {
-			throw new UserNotFoundException();
-		}
-		return modelMapper.map(repo.findById(user_id).get(), UserDto.class);
+		
+		User user = repo.findById(user_id).orElseThrow(() -> new UserNotFoundException());
+		
+		return modelMapper.map(user, UserDto.class);
 	}
 
 }
