@@ -52,12 +52,10 @@ public class CommentServiceImpl implements CommentService {
 			throw new APIException(HttpStatus.BAD_REQUEST, "comments doesnot belongs to the post");
 		}
 				
-				comment.setText(dto.getText());
-				comment.setCreatedOn(dto.getCreatedOn());
-				comment.setCreatedby(dto.getCreatedby());
+		comment.setText(dto.getText());
 				
-				Comment newComments= commentRepo.save(comment);
-				return mapper.map(newComments, CommentDto.class);
+		Comment newComments= commentRepo.save(comment);
+		return mapper.map(newComments, CommentDto.class);
 	}
 
 	@Override

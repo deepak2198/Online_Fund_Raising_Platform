@@ -18,37 +18,32 @@ import com.bootcamp.funds.dto.PostDto;
 import com.bootcamp.funds.service.PostServiceImpl;
 
 @RestController
-@RequestMapping("/user/{userId}")
+@RequestMapping("/user/{username}")
 public class PostController {
 	
 	@Autowired
 	PostServiceImpl postService;
 	
-	@PostMapping("/addPost")
-	public ResponseEntity<String> addPost(@PathVariable Long userId, @RequestBody PostDto dto){
-		postService.createPost(userId, dto);
-		return new ResponseEntity<String>("Post created successfully by the user having ID:: "+userId, HttpStatus.CREATED);
+	@PostMapping("/post")
+	public ResponseEntity<PostDto> addPost(@PathVariable String username, @RequestBody PostDto dto){
+		PostDto postDto = postService.createPost(username, dto);
+		return new ResponseEntity<PostDto>(postDto, HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/getAllPosts")
-	public ResponseEntity<List<PostDto>> getAllPosts(@PathVariable Long userId){
-		return new ResponseEntity<List<PostDto>>(postService.getAllPosts(userId), HttpStatus.OK);
+	@GetMapping("/getallposts")
+	public ResponseEntity<List<PostDto>> getAllPosts(){
+		return new ResponseEntity<List<PostDto>>(postService.getAllPosts(), HttpStatus.OK);
 	}
 	
-	@GetMapping("/getPost/{postId}")
-	public ResponseEntity<PostDto> getPostById(@PathVariable Long userId, @PathVariable Long postId){
-		return new ResponseEntity<PostDto>(postService.getPostById(userId, postId), HttpStatus.OK);
+	@PutMapping("/post/{postId}")
+	public ResponseEntity<PostDto> updatePost(@PathVariable String username, @PathVariable Long postId, @RequestBody PostDto dto){
+		return new ResponseEntity<PostDto>(postService.updatePost(username, postId, dto), HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/updatePost/{postId}")
-	public ResponseEntity<PostDto> updatePost(@PathVariable Long userId, @PathVariable Long postId, @RequestBody PostDto dto){
-		return new ResponseEntity<PostDto>(postService.updatePost(userId, postId, dto), HttpStatus.OK);
-	}
-	
-	@DeleteMapping("/deletePost/{postId}")
-	public ResponseEntity<String> DeletePostById(@PathVariable Long userId, @PathVariable Long postId){
-		postService.deletePostById(userId, postId);
-		return new ResponseEntity<String>("Post with ID:: "+postId+" deleted successfully", HttpStatus.OK);
+	@DeleteMapping("/post/{postId}")
+	public ResponseEntity<String> DeletePostById(@PathVariable String username, @PathVariable Long postId){
+		postService.deletePost(username, postId);
+		return new ResponseEntity<String>("Post with ID:: "+postId+" deleted successfully", HttpStatus.NO_CONTENT);
 	}
 
 }

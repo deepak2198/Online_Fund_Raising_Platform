@@ -30,8 +30,8 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public UserDto updateUser(Long userId, UserDto dto) {
-		repo.deleteById(userId);
+	public UserDto updateUser(String username, UserDto dto) {
+		deleteUser(username);
 		return addUser(dto);
 	}
 
@@ -49,19 +49,19 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public String deleteUserById(Long user_id) {
-		Optional<User> opt = repo.findById(user_id);
+	public String deleteUser(String username) {
+		Optional<User> opt = repo.findUserByUserName(username);
 		if(!opt.isPresent()) {
 			throw new UserNotFoundException();
 		}
-		repo.deleteById(user_id);
-		return "User with Id:: "+user_id+" is deleted successfully";
+		repo.delete(opt.get());
+		return "User :: "+username+" is deleted successfully";
 	}
 	
 	@Override
-	public UserDto getUserById(Long user_id) {
+	public UserDto getUserByName(String username) {
 		
-		User user = repo.findById(user_id).orElseThrow(() -> new UserNotFoundException());
+		User user = repo.findUserByUserName(username).orElseThrow(() -> new UserNotFoundException());
 		
 		return modelMapper.map(user, UserDto.class);
 	}

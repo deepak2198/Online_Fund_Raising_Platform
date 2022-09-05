@@ -1,7 +1,6 @@
 package com.bootcamp.funds.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,10 +21,9 @@ public class PostDto implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private long postId;
+	private long id;
+	private String title;
 	private String description;
-	private LocalDate createdOn;
-	private String createdBy;
 	
 	//private User user;
 	

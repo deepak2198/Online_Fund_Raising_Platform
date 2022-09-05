@@ -1,6 +1,5 @@
 package com.bootcamp.funds.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -37,14 +37,12 @@ public class Post {
 	@Column(name = "post_id")
 	private long id;
 	
+	@Column(name = "title", unique = true, updatable = false)
+	@NotNull(message = "Post title should not be leave empty")
+	private String title;
+	
 	@Column(name = "description")
 	private String description;
-
-	@Column(name = "createdOn")
-	private LocalDate createdOn = LocalDate.now();
-
-	@Column(name = "createdBy")
-	private String createdBy;
 	
 	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

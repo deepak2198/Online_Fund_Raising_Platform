@@ -30,11 +30,11 @@ public class PostServiceImpl implements PostService {
 	ModelMapper mapper;
 
 	@Override
-	public PostDto createPost(Long userId, PostDto dto) {
+	public PostDto createPost(String username, PostDto dto) {
 		Post post = mapper.map(dto, Post.class);
 		
-		// retrieve user entity by userId
-        User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException());
+		// retrieve user entity by username
+        User user = userRepo.findUserByUserName(username).orElseThrow(() -> new UserNotFoundException());
         
         //set user to post entity
         post.setUser(user);
@@ -44,11 +44,11 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostDto updatePost(Long userId, Long postId, PostDto dto){
-		// retrieve user entity by id
-		User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException());
+	public PostDto updatePost(String username, Long postId, PostDto dto){
+		// retrieve user entity by username
+		User user = userRepo.findUserByUserName(username).orElseThrow(() -> new UserNotFoundException());
 		
-		// retrieve post entity by id
+		// retrieve post entity by postId
 		Post post = postRepo.findById(postId).orElseThrow(() -> new PostNotFoundException());
 		
 		if(!(post.getUser().getId() == user.getId())) {
@@ -56,17 +56,15 @@ public class PostServiceImpl implements PostService {
 		}
 		
 		post.setDescription(dto.getDescription());
-		post.setCreatedOn(dto.getCreatedOn());
-		post.setCreatedBy(dto.getCreatedBy());
 		
 		Post updatedPost = postRepo.save(post);
 		return mapper.map(updatedPost, PostDto.class);
 	}
 
 	@Override
-	public String deletePostById(Long userId, Long postId){
-		// retrieve user entity by id
-		User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException());
+	public String deletePost(String username, Long postId){
+		// retrieve user entity by username
+		User user = userRepo.findUserByUserName(username).orElseThrow(() -> new UserNotFoundException());
 				
 		// retrieve post entity by id
 		Post post = postRepo.findById(postId).orElseThrow(() -> new PostNotFoundException());
@@ -80,23 +78,8 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostDto getPostById(Long userId, Long postId) {
-		// retrieve user entity by id
-		User user = userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException());
-						
-		// retrieve post entity by id
-		Post post = postRepo.findById(postId).orElseThrow(() -> new PostNotFoundException());
-						
-		if(!(post.getUser().getId() == user.getId())) {
-			throw new APIException(HttpStatus.BAD_REQUEST, "post doesnot belongs to the user");
-		}
-		
-		return mapper.map(post, PostDto.class);
-	}
-
-	@Override
-	public List<PostDto> getAllPosts(Long userId) {
-		List<Post> postData = postRepo.findByUserId(userId);
+	public List<PostDto> getAllPosts() {
+		List<Post> postData = postRepo.findAll();
 		
 		return postData.stream().map(post -> mapper.map(post, PostDto.class)).collect(Collectors.toList());
 	}

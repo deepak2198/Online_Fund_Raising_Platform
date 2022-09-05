@@ -25,7 +25,7 @@ public class UserController {
 	@Autowired
 	private UserServiceImpl userService;
 	
-	@GetMapping("/getAllUsers")
+	@GetMapping("/getallusers")
 	public ResponseEntity<List<UserDto>> getAllUsers(){
 		return new ResponseEntity<List<UserDto>>(userService.showAllUsers(), HttpStatus.OK);
 	}
@@ -35,25 +35,25 @@ public class UserController {
 		return new ResponseEntity<UserDto>(userService.addUser(user), HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/update/{user_id}")
-	public ResponseEntity<UserDto> updateUser(@PathVariable Long user_id, @RequestBody UserDto user){
-		UserDto opt = userService.getUserById(user_id);
+	@PutMapping("/{username}")
+	public ResponseEntity<UserDto> updateUser(@PathVariable String username, @RequestBody UserDto user){
+		UserDto opt = userService.getUserByName(username);
 		if(opt == null) {
 			throw new UserNotFoundException();
 		}
-		UserDto u = userService.updateUser(user_id, user);
+		UserDto u = userService.updateUser(username, user);
 		return new ResponseEntity<UserDto>(u, HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/getUserById/{user_id}")
-	public ResponseEntity<UserDto> getUser(@PathVariable Long user_id){
-		return new ResponseEntity<UserDto>(userService.getUserById(user_id), HttpStatus.OK);
+	@GetMapping("/{username}")
+	public ResponseEntity<UserDto> getUser(@PathVariable String username){
+		return new ResponseEntity<UserDto>(userService.getUserByName(username), HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/delete/{user_id}")
-	public ResponseEntity<UserDto> removeUser(@PathVariable Long user_id){
-		userService.deleteUserById(user_id);
-		return new ResponseEntity<UserDto>(HttpStatus.OK);
+	@DeleteMapping("/{username}")
+	public ResponseEntity<UserDto> removeUser(@PathVariable String username){
+		userService.deleteUser(username);
+		return new ResponseEntity<UserDto>(HttpStatus.NO_CONTENT);
 	}
 	
 

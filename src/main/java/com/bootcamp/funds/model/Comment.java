@@ -1,7 +1,5 @@
 package com.bootcamp.funds.model;
 
-import java.time.LocalDate;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,12 +32,6 @@ public class Comment {
 	
 	@Column(name = "Comment")
 	private String text;
-	
-	@Column(name = "Created_On")
-	private LocalDate createdOn;
-	
-	@Column(name = "Created_By")
-	private String createdby;
 
 	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

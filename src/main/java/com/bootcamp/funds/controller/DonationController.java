@@ -23,17 +23,17 @@ public class DonationController {
 	DonationServiceImpl donationService;
 	
 	@PostMapping("/donate")
-	public ResponseEntity<String> makeDonation(@PathVariable Long postId, @RequestBody DonationDto dto){
-		donationService.donate(postId, dto);
-		return new ResponseEntity<String>("donated for the post having ID:: "+postId+" is done successfully", HttpStatus.CREATED);
+	public ResponseEntity<DonationDto> makeDonation(@PathVariable Long postId, @RequestBody DonationDto dto){
+		DonationDto donationDto = donationService.donate(postId, dto);
+		return new ResponseEntity<DonationDto>(donationDto, HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/viewAllDonations")
+	@GetMapping("/viewalldonations")
 	public ResponseEntity<List<DonationDto>> showAllDonations(@PathVariable Long postId){
 		return new ResponseEntity<List<DonationDto>>(donationService.viewAllDonations(postId), HttpStatus.OK);
 	}
 	
-	@GetMapping("/getDonation/{donationId}")
+	@GetMapping("/donation/{donationId}")
 	public ResponseEntity<DonationDto> viewDonationById(@PathVariable Long postId, @PathVariable Long donationId){
 		return new ResponseEntity<DonationDto>(donationService.viewDonation(postId, donationId), HttpStatus.OK);
 	}

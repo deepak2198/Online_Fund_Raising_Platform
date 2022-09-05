@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,10 +33,12 @@ public class User{
 	@Column(name = "user_id")
 	private Long id;
 	
-	@Column(name = "user_name")
+	@Column(name = "user_name", unique = true)
+	@NotNull(message = "User Name should not be empty")
 	private String username;
 	
 	@Column(name = "first_name")
+	@NotNull(message = "First Name should not be empty")
 	private String firstName;
 	
 	@Column(name = "last_name")
@@ -45,9 +48,11 @@ public class User{
 	private LocalDate dateOfBirth;
  
 	@Column(name = "email_id")
+	@NotNull(message = "emailId should not be empty")
 	private String emailId;
 	
 	@Column(name = "password")
+	@NotNull(message = "password should not be empty")
 	private String password;
 
 	@JsonIgnore

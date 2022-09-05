@@ -1,7 +1,6 @@
 package com.bootcamp.funds.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import com.bootcamp.funds.model.Post;
 
@@ -22,10 +21,6 @@ public class DonationDto implements Serializable{
 	private long id;
 	
 	private double amount;
-	
-	private LocalDate dateOfDonation;
-	
-	private String comments;
 	
 	private Post post;
 	

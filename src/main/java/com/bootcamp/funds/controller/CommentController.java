@@ -21,21 +21,21 @@ public class CommentController {
 	@Autowired
 	CommentServiceImpl commentService;
 	
-	@PostMapping("/addComment")
-	public ResponseEntity<String> postComment(@PathVariable Long postId, @RequestBody CommentDto dto){
-		commentService.createComment(postId, dto);
-		return new ResponseEntity<String>("Comment Posted successfully" , HttpStatus.CREATED);
+	@PostMapping("/comment")
+	public ResponseEntity<CommentDto> postComment(@PathVariable Long postId, @RequestBody CommentDto dto){
+		CommentDto commentDto = commentService.createComment(postId, dto);
+		return new ResponseEntity<CommentDto>(commentDto, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/updateComment/{commentId}")
+	@PutMapping("/comment/{commentId}")
 	public ResponseEntity<CommentDto> updateComment(@PathVariable Long commentId, @PathVariable Long postId, @RequestBody CommentDto dto){
 		return new ResponseEntity<CommentDto>(commentService.updateComment(postId, commentId, dto), HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/deleteComment/{commentId}")
+	@DeleteMapping("/comment/{commentId}")
 	public ResponseEntity<String> DeleteCommentById(@PathVariable Long commentId, @PathVariable Long postId){
 		commentService.deleteCommentById(postId, commentId);
-		return new ResponseEntity<String>("Comment with ID:: "+commentId+" deleted successfully", HttpStatus.OK);
+		return new ResponseEntity<String>("Comment with ID:: "+commentId+" deleted successfully", HttpStatus.NO_CONTENT);
 	}
 
 }

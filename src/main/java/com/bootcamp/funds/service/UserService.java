@@ -6,9 +6,9 @@ import com.bootcamp.funds.dto.UserDto;
 
 public interface UserService {
 	public UserDto addUser(UserDto dto);
-	public UserDto updateUser(Long user_id, UserDto dto);
-	public String deleteUserById(Long user_id);
+	public UserDto updateUser(String username, UserDto dto);
+	public String deleteUser(String username);
 	List<UserDto> showAllUsers();
-	UserDto getUserById(Long user_id);
+	UserDto getUserByName(String username);
 
 }

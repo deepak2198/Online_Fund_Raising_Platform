@@ -3,19 +3,21 @@ package com.bootcamp.funds.dto;
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter  @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentDto implements Serializable{
+public class AdminDto implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private long id;
-	private String text;
-	
-	//private Post post;
+	private String adminName;
+	private String emailId;
+	private String password;
+	 
 
 }
+
