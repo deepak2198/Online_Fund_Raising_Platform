@@ -24,7 +24,7 @@ public class AdminController {
 	private AdminServiceImpl adminService;
 	
 	
-	@GetMapping("/getalladmins")
+	@GetMapping("/admins")
 	public ResponseEntity<List<AdminDto>> showAllAdmins(){
 		return new ResponseEntity<List<AdminDto>>(adminService.getAllAdmins(), HttpStatus.OK);
 	}
